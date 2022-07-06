@@ -11,7 +11,7 @@ const bookSchema = new mongoose.Schema(
         excerpt: {
             type: String,
             required: true
-        },                                      //title,excerpt,userId,ISBN,category,subcategory,releasedAt
+        },                                      
         userId: {
             type: ObjectId,
             required: true,
@@ -26,9 +26,9 @@ const bookSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        subcategory: [{
+        subcategory: {
             type: String, required: true
-        }],
+        },
         reviews: {
             type: Number,
             default: 0

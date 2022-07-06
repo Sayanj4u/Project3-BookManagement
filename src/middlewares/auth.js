@@ -16,7 +16,7 @@ const loginCheck = async function(req, res, next) {
             if (Date.now()>decoded.exp*1000) {
                 return res.status(401).send({ status: false, message: "token is expired" })
             }
-console.log(decoded)
+
             if(req.body.userId !== decoded.userId){
                 return res.status(400).send({status:false, msg:"Login user is different"})
             }

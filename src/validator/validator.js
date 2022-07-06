@@ -1,4 +1,3 @@
-//title,nama,phone,email,password
 const mongoose = require("mongoose")
 
 const isValidName = (name) => {
