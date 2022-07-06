@@ -27,10 +27,11 @@ const bookSchema = new mongoose.Schema(
             required: true
         },
         subcategory: {
-            type: String, required: true
+            type: String, 
+            required: true
         },
         reviews: {
-            type: Number,
+            type: Number,      //need help
             default: 0
          },
         deletedAt: {
@@ -46,11 +47,6 @@ const bookSchema = new mongoose.Schema(
             required: true, 
             format: "YYYY-MM-DD" 
         }
-
-
-
     }, { timestamps: true });
-
-
 
 module.exports = mongoose.model('book', bookSchema)

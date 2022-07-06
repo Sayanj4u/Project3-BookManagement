@@ -6,7 +6,7 @@ const validator = require("../validator/validator")
 const createUser = async function (req, res) {
     let body = req.body
 
-    let requestBody = req.body;
+    let requestBody = body;
 
     if (!validator.isValidRequestBody(requestBody)) {
         return res.status(400).send({

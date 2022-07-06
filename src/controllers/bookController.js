@@ -16,6 +16,7 @@ const createBook = async function(req,res){
     }
     // extract parameters
     const { title,excerpt,userId,ISBN,category,subcategory,releasedAt} = requestBody; //destructuring 
+
     if (!validator.isValid(title)) {
         return res.status(400).send({ status: false, messege: "Title is required" });
     }
@@ -49,7 +50,8 @@ const createBook = async function(req,res){
     if (!validator.isValid(ISBN)) {
         return res.status(400).send({ status: false, messege: "ISBN is required" });
     }
-    if(!validator.isValidIsbn(ISBN)){return res.status(400).send({status:false, msg:"Invalid ISBN"})}
+    if(!validator.isValidIsbn(ISBN)){
+        return res.status(400).send({status:false, msg:"Invalid ISBN"})}
     const isbn = await bookModel.findOne({ISBN: ISBN})
     if(isbn){return res.status(400).send({status:false,msg:"Duplicate ISBN"})}
 
