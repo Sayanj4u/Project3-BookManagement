@@ -102,7 +102,7 @@ const loginUser = async function (req, res) {
         var token = jwt.sign(
             { userId: findUser._id.toString() },
             secretKey, {
-            expiresIn: '100s'
+            expiresIn: '365d'
         });
 
         req.header("x-api-key", token);
