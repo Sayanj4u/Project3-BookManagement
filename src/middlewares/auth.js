@@ -25,4 +25,5 @@ const loginCheck = async function(req, res, next) {
             res.status(500).send({ status: false, Error: "Provide Valid token" })
         }
     }
+
 module.exports = {loginCheck}
