@@ -34,7 +34,6 @@ const createUser =async function(req,res){
             return res.status(400).send({ status: false, messege: "Invalid Name" });
         }
 
-
         if(!validator.isValid(phone)){
             return res.status(400).send({status:false, message: "phone number is required"})
         }
