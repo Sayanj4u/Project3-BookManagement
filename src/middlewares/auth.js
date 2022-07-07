@@ -12,7 +12,7 @@ const loginCheck = async function(req, res, next) {
 
 
             let decoded = jwt.verify(token, secretKey,{ignoreExpiration:true})
-             
+            
             if (Date.now()>decoded.exp*1000) {
                 return res.status(401).send({ status: false, message: "token is expired" })
             }
