@@ -60,9 +60,7 @@ const createBook = async function(req,res){
     if (!validator.isValid(category)) {
         return res.status(400).send({ status: false, messege: "category is required" });
     }
-    // if (!validator.isValid(subcategory)) {
-    //     return res.status(400).send({ status: false, messege: "subcategory is required" });
-    // }
+
   console.log(typeof subcategory)
 if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, msg:"subcategory must be string or array"})}
     if (!validator.isValid(releasedAt)) {
@@ -75,19 +73,13 @@ if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({stat
 }
 const getBooks = async function(req,res){
     const query = req.query
-    // const {userId,category,subcategory}= req.query
-    console.log(query.userId)
-
-    // if(!mongoose.isValidObjectId(query.userId)){
-    //     return res.status(400).send({ status: false, messege: "userId is Invalid" });
-    //    }
-
+  
+if(query.userId==''){
+    return res.status(400).send({status:false,message:"please enter userId "})
+}
     const book = await bookModel.find({$and:[{isDeleted:false},query]}).sort({title:1}).select({_id:1,title:1,excerpt:1,userId:1,category:1,releasedAt:1,reviews:1})
     if(book.length===0){return res.status(404).send({status:false,message:"No Books Found"})}
     console.log(book.length)
-    // if(!query.userId){ 
-    //     return res.status(400).send({status:false,message:"userId is required in query param"})
-    // } ///USERID TA SESSION
     res.status(200).send({status:true,message:"Books list", data: book})
 }
 
