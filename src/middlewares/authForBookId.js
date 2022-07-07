@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const secretKey = "Functionup-Radon"
-
+const mongoose=require("mongoose")
 
 const bookModel = require("../models/bookModel")
 
@@ -31,12 +31,14 @@ const authCheck = async function(req, res, next) {
             return res.status(401).send({ status: false, message: "token is expired" })
         }
         const bookid = await bookModel.findById({_id:book})
-        if(bookid.userId !== decoded.userId){
+    
+        let logiUserId=bookid.userId.toString()
+        if(logiUserId!== decoded.userId){
             return res.status(400).send({status:false, msg:"Login user is different"})
         }
         next()
     } catch (error) {
-        res.status(500).send({ status: false, Error: "Provide Valid token" })
+        res.status(500).send({ status: false, Error:error.message })
     }
 }
 

@@ -57,9 +57,15 @@ const createBook = async function(req,res){
     if (!validator.isValid(category)) {
         return res.status(400).send({ status: false, messege: "category is required" });
     }
+<<<<<<< HEAD
     if (!validator.isValid(subcategory)) {
         return res.status(400).send({ status: false, messege: "subcategory is required" });
     }
+=======
+
+  console.log(typeof subcategory)
+if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, msg:"subcategory must be string or array"})}
+>>>>>>> ea587190b25fac3bc3ebe69524fadeb813001b11
     if (!validator.isValid(releasedAt)) {
         return res.status(400).send({ status: false, messege: "releasedAt is required" });
     }
@@ -67,6 +73,66 @@ const createBook = async function(req,res){
     const book= await bookModel.create(requestBody)
 
     res.status(201).send({status:true,message: "Book created successfully",data:book})
+}
+<<<<<<< HEAD
+module.exports={createBook};
+=======
+const getBooks = async function(req,res){
+    const query = req.query
+  
+if(query.userId==''){
+    return res.status(400).send({status:false,message:"please enter userId "})
+}
+    const book = await bookModel.find({$and:[{isDeleted:false},query]}).sort({title:1}).select({_id:1,title:1,excerpt:1,userId:1,category:1,releasedAt:1,reviews:1})
+    if(book.length===0){return res.status(404).send({status:false,message:"No Books Found"})}
+    console.log(book.length)
+    res.status(200).send({status:true,message:"Books list", data: book})
+}
+
+const getBooksById = async function(req,res){
+    const bookId= req.params.bookId
+    if(!mongoose.isValidObjectId(bookId)){
+        return res.status(400).send({ status: false, messege: "bookId is Invalid" });
+       }
+       const review =await reviewModel.find({bookId:bookId})
+
+       console.log(review)
+    const book = await bookModel.findById({_id:bookId})
+    if(!book){ return res.status(404).send({status:false,message:"No such book found with this Id"})}
+    const {_id,title,userId,category,subcategory,excerpt,isDeleted,reviews,releasedAt,createdAt,updatedAt} = book
+    const data ={_id:_id,title:title,userId:userId,category:category,subcategory:subcategory,excerpt:excerpt,isDeleted:isDeleted,reviews:reviews,releasedAt:releasedAt,createdAt:createdAt,updatedAt:updatedAt,reviewsData:review}
+    res.status(200).send({status:true,data:data})
+}
+
+const updateBookById = async function(req,res){
+    const book = req.params.bookId
+    const updateList = req.body
+    
+    if(Object.keys(updateList).length===0){return res.status(400).send({status:false, message:"Body can not be Empty"})}
+    const updatedTitle = await bookModel.find({title:updateList.title})
+    if(updatedTitle.length>0){ return res.status(400).send({status:false, message:"Title already present"})}
+    
+    const updateIsbn = await bookModel.find({ISBN:updateList.ISBN})
+    if(updateIsbn.length>0){ return res.status(400).send({status:false, message:"ISBN already present"})}
+
+    const updatedBook = await bookModel.findOneAndUpdate({_id:book},{$set:updateList},{new:true})
+   
+    res.status(200).send({status:true, data:updatedBook})
+}
+
+const deleteByBookId = async function(req,res){
+    const book = req.params.bookId
+
+    const deleteBook = await bookModel.findOneAndUpdate({_id:book},{$set:{isDeleted:true}},{new:true})
+    res.status(200).send({status:true,data:deleteBook})
+
 
 }
-module.exports={createBook};
+
+
+
+
+module.exports={createBook,getBooks,
+    getBooksById,updateBookById,
+    deleteByBookId};
+>>>>>>> ea587190b25fac3bc3ebe69524fadeb813001b11
