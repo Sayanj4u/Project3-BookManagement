@@ -15,6 +15,11 @@ const isValid = function(value) {
     if (typeof value === "string" && value.trim().length === 0) return false;
     return true;
 };
+const isValidSubcategory = function(subcategory) {
+    if (typeof  subcategory !== "object") return false;
+    if (typeof subcategory === "string" && subcategory.trim().length === 0) return false;
+    return true;
+};
 
 const isValidRequestBody = function(requestBody) {
     return Object.keys(requestBody).length > 0;
@@ -39,4 +44,5 @@ const isValidObjectId = function(objectId) {
     return mongoose.Types.ObjectId.isValid(objectId);
 };
 
-module.exports = {isValidName,isValid,isValidRequestBody,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidTitle,isValidIsbn}
+module.exports = {isValidName,isValid,isValidRequestBody,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidTitle,isValidIsbn,
+    isValidSubcategory}
