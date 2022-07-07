@@ -7,6 +7,7 @@ const MW = require("../middlewares/auth")
 router.post('/register',userController.createUser)
 router.post('/books',MW.loginCheck,bookController.createBook)
 router.post('/login',userController.loginUser)
+router.get('/books',bookController.getBooks)
 
 
 module.exports=router;

@@ -1,4 +1,3 @@
-//title,nama,phone,email,password
 const mongoose = require("mongoose")
 
 const isValidName = (name) => {
@@ -14,6 +13,11 @@ const isValidTitle = (title)=> {
 const isValid = function(value) {
     if (typeof value !== "string" || value === null) return false;
     if (typeof value === "string" && value.trim().length === 0) return false;
+    return true;
+};
+const isValidSubcategory = function(subcategory) {
+    if (typeof  subcategory !== "object") return false;
+    if (typeof subcategory === "string" && subcategory.trim().length === 0) return false;
     return true;
 };
 
@@ -40,4 +44,5 @@ const isValidObjectId = function(objectId) {
     return mongoose.Types.ObjectId.isValid(objectId);
 };
 
-module.exports = {isValidName,isValid,isValidRequestBody,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidTitle,isValidIsbn}
+module.exports = {isValidName,isValid,isValidRequestBody,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidTitle,isValidIsbn,
+    isValidSubcategory}
