@@ -16,6 +16,7 @@ const createBook = async function(req,res){
     }
     // extract parameters
     const { title,excerpt,userId,ISBN,category,subcategory,releasedAt} = requestBody; //destructuring 
+
     if (!validator.isValid(title)) {
         return res.status(400).send({ status: false, messege: "Title is required" });
     }
@@ -49,7 +50,8 @@ const createBook = async function(req,res){
     if (!validator.isValid(ISBN)) {
         return res.status(400).send({ status: false, messege: "ISBN is required" });
     }
-    if(!validator.isValidIsbn(ISBN)){return res.status(400).send({status:false, msg:"Invalid ISBN"})}//TA QUESTIONS
+    if(!validator.isValidIsbn(ISBN)){
+        return res.status(400).send({status:false, msg:"Invalid ISBN"})}
     const isbn = await bookModel.findOne({ISBN: ISBN})
     if(isbn){return res.status(400).send({status:false,msg:"Duplicate ISBN"})}
 
@@ -67,6 +69,14 @@ const createBook = async function(req,res){
     const book= await bookModel.create(requestBody)
 
     res.status(201).send({status:true,message: "Book created successfully",data:book})
-
 }
-module.exports={createBook};
+
+
+
+const getBooks=async function(req,res){
+    const books=await bookModel.find({isDeleted:false}).sort({title:1})
+    return res.status(200).send({status:true,nessage:"success",data:books})
+}
+
+
+module.exports={createBook,getBooks};

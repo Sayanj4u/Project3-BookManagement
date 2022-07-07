@@ -11,7 +11,7 @@ const bookSchema = new mongoose.Schema(
         excerpt: {
             type: String,
             required: true
-        },                                      //title,excerpt,userId,ISBN,category,subcategory,releasedAt
+        },                                      
         userId: {
             type: ObjectId,
             required: true,
@@ -26,11 +26,12 @@ const bookSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        subcategory: [{
-            type: String, required: true
-        }],
+        subcategory: {
+            type: String, 
+            required: true
+        },
         reviews: {
-            type: Number,
+            type: Number,      //need help
             default: 0
          },
         deletedAt: {
@@ -46,11 +47,6 @@ const bookSchema = new mongoose.Schema(
             required: true, 
             format: "YYYY-MM-DD" 
         }
-
-
-
     }, { timestamps: true });
-
-
 
 module.exports = mongoose.model('book', bookSchema)
