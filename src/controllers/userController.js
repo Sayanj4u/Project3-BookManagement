@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const validator = require("../validator/validator")
 
 const createUser = async function (req, res) {
+    try{
     let body = req.body
 
     let requestBody = body;
@@ -11,7 +12,7 @@ const createUser = async function (req, res) {
     if (!validator.isValidRequestBody(requestBody)) {
         return res.status(400).send({
             status: false,
-            messege: "Please provide user details",
+            message: "Please provide user details",
         });
     }
     // extract parameters
@@ -36,7 +37,7 @@ const createUser = async function (req, res) {
 
 
     if (!validator.isValid(phone)) {
-        return res.status(400).send({ status: false, message: "phone number is required" })
+        return res.status(400).send({ status: false, message: "phone number is required and must be in string" })
     }
     if (!validator.isValidMobile(phone)) {
         return res.status(400).send({ status: false, msg: "invalid mobile number" })
@@ -65,11 +66,15 @@ const createUser = async function (req, res) {
     if (!validator.isValidPassword(password)) {
         return res.status(400).send({ status: false, msg: "Password must contains min 8 chracters, max 15 characters at least one uppercase letter, one lowercase letter, one number and one special character:" })
     }
-
+    
     const registerUser = await userModel.create(body)
+    res.status(201).send({ status: true, message: "Success", data: registerUser })
+} catch (error) {
+    res.status(500).send({ status: false, Error: error.message });
+}
+}
 
-    res.status(201).send({ status: true, message: "success", data: registerUser })
-};
+
 
 const loginUser = async function (req, res) {
     try {
@@ -93,10 +98,14 @@ const loginUser = async function (req, res) {
             return res.status(400).send({status:false, msg:"password is required"})
         }
 
-        const findUser = await userModel.findOne({ email, password });
+        const findUser = await userModel.findOne({email});
         
         if (!findUser) {
-            return res.status(401).send({ status: false, msg: "Invalid login details" })
+            return res.status(401).send({ status: false, msg: "Incorrect email Id" })
+        }
+        if(findUser.password!==req.body.password){
+            return res.status(401).send({ status: false, msg: "Incorrect password" })
+
         }
 
         var token = jwt.sign(

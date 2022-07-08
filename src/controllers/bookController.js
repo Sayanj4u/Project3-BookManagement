@@ -8,54 +8,51 @@ const createBook = async function(req,res){
 
     let requestBody = req.body;
 
-    if (!validator.isValidRequestBody(requestBody)) {
-        return res.status(400).send({
-            status: false,
-            messege: "Please provide book details",
-        });
-    }
     // extract parameters
     const { title,excerpt,userId,ISBN,category,subcategory,releasedAt} = requestBody; //destructuring 
     if (!validator.isValid(title)) {
-        return res.status(400).send({ status: false, messege: "Title is required" });
+        return res.status(400).send({ status: false, message: "Title is required" });
     }
     if(!validator.isValidTitle(title)){
-        return res.status(400).send({ status: false, messege: "Invalid title" });
+        return res.status(400).send({ status: false, message: "Invalid title" });
     }
     const titl = await bookModel.findOne({title:title})
     if(titl){
-        return res.status(400).send({ status: false, messege: "Title is already present" });
+        return res.status(400).send({ status: false, message: "Title is already present" });
     }
 
 
     if (!validator.isValid(excerpt)) {
-        return res.status(400).send({ status: false, messege: "excerpt is required" });
+        return res.status(400).send({ status: false, message: "excerpt is required" });
     }
 
 
     if (!validator.isValid(userId)) {
-        return res.status(400).send({ status: false, messege: "userId is required" });
+        return res.status(400).send({ status: false, message: "userId is required" });
     }
    if(!mongoose.isValidObjectId(userId)){
-    return res.status(400).send({ status: false, messege: "userId is Invalid" });
+    return res.status(400).send({ status: false, message: "userId is Invalid" });
    }
     const uId = await userModel.findById({_id:userId})
     if(!uId){
-        return res.status(404).send({status:false, msg:"no user found with this ID"})
+        return res.status(404).send({status:false, message:"no user found with this ID"})
     }
-
-
 
     if (!validator.isValid(ISBN)) {
-        return res.status(400).send({ status: false, messege: "ISBN is required" });
+        return res.status(400).send({ status: false, message: "ISBN is required" });
     }
+
     if(!validator.isValidIsbn(ISBN)){return res.status(400).send({status:false, msg:"Invalid ISBN"})}//TA QUESTIONS
+
+    if(!validator.isValidIsbn(ISBN)){
+        return res.status(400).send({status:false, message:"Invalid ISBN"})}
+
     const isbn = await bookModel.findOne({ISBN: ISBN})
-    if(isbn){return res.status(400).send({status:false,msg:"Duplicate ISBN"})}
+    if(isbn){return res.status(400).send({status:false,message:"Duplicate ISBN"})}
 
 
     if (!validator.isValid(category)) {
-        return res.status(400).send({ status: false, messege: "category is required" });
+        return res.status(400).send({ status: false, message: "category is required" });
     }
 
     if (!validator.isValid(subcategory)) {
@@ -63,7 +60,7 @@ const createBook = async function(req,res){
     }
 
   console.log(typeof subcategory)
-if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, msg:"subcategory must be string or array"})}
+if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, message:"subcategory must be string or array"})}
     if (!validator.isValid(releasedAt)) {
         return res.status(400).send({ status: false, messege: "releasedAt is required" });
     }
@@ -87,7 +84,7 @@ if(query.userId==''){
 const getBooksById = async function(req,res){
     const bookId= req.params.bookId
     if(!mongoose.isValidObjectId(bookId)){
-        return res.status(400).send({ status: false, messege: "bookId is Invalid" });
+        return res.status(400).send({ status: false, message: "bookId is Invalid" });
        }
        const review =await reviewModel.find({bookId:bookId})
 
