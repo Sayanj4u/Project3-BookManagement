@@ -6,9 +6,15 @@ const isValidName = (name) => {
 };
 
 const isValidTitle = (title)=> {
-    if(/^[A-Za-z\s.\(\)0-9]{3,}$/.test(title))
+    if(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(title))
     return true
 }
+
+
+///^[A-Za-z0-9_ -]*$/
+
+
+
 
 const isValid = function(value) {
     if (typeof value !== "string" || value === null) return false;
@@ -40,6 +46,7 @@ const isValidIsbn = (ISBN)=> {
     if(/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN))
     return true
 }
+
 const isValidObjectId = function(objectId) {
     return mongoose.Types.ObjectId.isValid(objectId);
 };
