@@ -1,7 +1,6 @@
 const bookModel = require("../models/bookModel");
 const validator = require("../validator/validator")
-const mongoose = require("mongoose");
-const reviewModel = require("../models/reviewModel");
+const mongoose = require("mongoose")
 
 
 const createBook = async function(req,res){
@@ -10,7 +9,6 @@ try{
 
     // extract parameters
     const { title,excerpt,userId,ISBN,category,subcategory,releasedAt} = requestBody; //destructuring 
-
     if (!validator.isValid(title)) {
         return res.status(400).send({ status: false, message: "Title is required" });
     }
@@ -35,8 +33,12 @@ excerpt.trim()
     if (!validator.isValid(ISBN)) {
         return res.status(400).send({ status: false, message: "ISBN is required" });
     }
+
+    if(!validator.isValidIsbn(ISBN)){return res.status(400).send({status:false, msg:"Invalid ISBN"})}//TA QUESTIONS
+
     if(!validator.isValidIsbn(ISBN)){
         return res.status(400).send({status:false, message:"Invalid ISBN"})}
+
     const isbn = await bookModel.findOne({ISBN: ISBN})
     if(isbn){return res.status(400).send({status:false,message:"Duplicate ISBN"})}
 
@@ -45,10 +47,14 @@ excerpt.trim()
         return res.status(400).send({ status: false, message: "category is required" });
     }
 
+    if (!validator.isValid(subcategory)) {
+        return res.status(400).send({ status: false, messege: "subcategory is required" });
+    }
+
   console.log(typeof subcategory)
 if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, message:"subcategory must be string or array"})}
     if (!validator.isValid(releasedAt)) {
-        return res.status(400).send({ status: false, message: "releasedAt is required" });
+        return res.status(400).send({ status: false, messege: "releasedAt is required" });
     }
 
     const book= await bookModel.create(requestBody)
