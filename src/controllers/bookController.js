@@ -57,15 +57,13 @@ const createBook = async function(req,res){
     if (!validator.isValid(category)) {
         return res.status(400).send({ status: false, messege: "category is required" });
     }
-<<<<<<< HEAD
+
     if (!validator.isValid(subcategory)) {
         return res.status(400).send({ status: false, messege: "subcategory is required" });
     }
-=======
 
   console.log(typeof subcategory)
 if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({status:false, msg:"subcategory must be string or array"})}
->>>>>>> ea587190b25fac3bc3ebe69524fadeb813001b11
     if (!validator.isValid(releasedAt)) {
         return res.status(400).send({ status: false, messege: "releasedAt is required" });
     }
@@ -74,9 +72,6 @@ if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({stat
 
     res.status(201).send({status:true,message: "Book created successfully",data:book})
 }
-<<<<<<< HEAD
-module.exports={createBook};
-=======
 const getBooks = async function(req,res){
     const query = req.query
   
@@ -135,4 +130,3 @@ const deleteByBookId = async function(req,res){
 module.exports={createBook,getBooks,
     getBooksById,updateBookById,
     deleteByBookId};
->>>>>>> ea587190b25fac3bc3ebe69524fadeb813001b11
