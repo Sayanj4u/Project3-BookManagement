@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const secretKey = "Functionup-Radon";
+const mongoose=require("mongoose")
+const userModel = require("../models/userModel");
+
 
 const loginCheck = async function (req, res, next) {
   try {
@@ -23,10 +26,15 @@ const loginCheck = async function (req, res, next) {
         .status(401)
         .send({ status: false, message: "token is expired" });
     }
-    const reqUserId = req.body.userId;
-    const decodedId = decoded.userId;
-    console.log(reqUserId);
-    console.log(decodedId);
+
+    if(!mongoose.isValidObjectId(req.body.userId)){
+        return res.status(400).send({ status: false, message: "userId is Invalid" });
+       }
+ const uId = await userModel.findById({_id:req.body.userId})
+    if(!uId){
+        return res.status(404).send({status:false, message:"no user found with this ID"})
+    }
+
     if (req.body.userId !== decoded.userId) {
       return res
         .status(400)

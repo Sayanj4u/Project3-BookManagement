@@ -1,12 +1,11 @@
 const bookModel = require("../models/bookModel");
-const userModel = require("../models/userModel");
 const validator = require("../validator/validator")
 const mongoose = require("mongoose");
 const reviewModel = require("../models/reviewModel");
 
 
 const createBook = async function(req,res){
-
+try{
     let requestBody = req.body;
 
     // extract parameters
@@ -18,6 +17,7 @@ const createBook = async function(req,res){
     if(!validator.isValidTitle(title)){
         return res.status(400).send({ status: false, message: "Invalid title" });
     }
+    title.trim()
     const titl = await bookModel.findOne({title:title})
     if(titl){
         return res.status(400).send({ status: false, message: "Title is already present" });
@@ -27,19 +27,11 @@ const createBook = async function(req,res){
     if (!validator.isValid(excerpt)) {
         return res.status(400).send({ status: false, message: "excerpt is required" });
     }
-
-
+excerpt.trim()
     if (!validator.isValid(userId)) {
         return res.status(400).send({ status: false, message: "userId is required" });
     }
-   if(!mongoose.isValidObjectId(userId)){
-    return res.status(400).send({ status: false, message: "userId is Invalid" });
-   }
-    const uId = await userModel.findById({_id:userId})
-    if(!uId){
-        return res.status(404).send({status:false, message:"no user found with this ID"})
-    }
-
+   
     if (!validator.isValid(ISBN)) {
         return res.status(400).send({ status: false, message: "ISBN is required" });
     }
@@ -63,6 +55,14 @@ if(!validator.isValidSubcategory(subcategory)){return res.status(400).send({stat
 
     res.status(201).send({status:true,message: "Book created successfully",data:book})
 }
+catch(error){
+    return res.status(500).send({status:false,error:error.message})
+}
+}
+
+
+
+
 const getBooks = async function(req,res){
     const query = req.query
   
@@ -97,7 +97,7 @@ const updateBookById = async function(req,res){
     if(Object.keys(updateList).length===0){return res.status(400).send({status:false, message:"Body can not be Empty"})}
     const updatedTitle = await bookModel.find({title:updateList.title})
     if(updatedTitle.length>0){ return res.status(400).send({status:false, message:"Title already present"})}
-    
+   
     const updateIsbn = await bookModel.find({ISBN:updateList.ISBN})
     if(updateIsbn.length>0){ return res.status(400).send({status:false, message:"ISBN already present"})}
 
