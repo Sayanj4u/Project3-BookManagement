@@ -7,9 +7,17 @@ const reviewModel = require("../models/reviewModel")
 
 const updateCheckReview = async function(req, res, next) {
     try {
+        let token = req.headers['x-api-key'] || req.headers['X-api-key']
+        if (!token) {
+            return res.status(401).send({ status: false, message: "token must be present" })
+        }
+        try{
+            let decoded = jwt.verify(token, secretKey);
+            }catch(error){
+            return res.status(401).send({status:false,message:"invalid token or token expired"})
+        }
 
         const {reviewId,bookId} = req.params
-        
         if(!mongoose.isValidObjectId(bookId)){
             return res.status(400).send({ status: false, messege: "bookId is Invalid" });
         }
@@ -27,17 +35,8 @@ const updateCheckReview = async function(req, res, next) {
         const review = await reviewModel.findById({_id:reviewId})
         if(!review){ return res.status(404).send({status:false,message:"No such Review found with this Id"})}
     
-    
         const reviewDeleteCheck = await reviewModel.find({$and:[{_id:reviewId}, {isDeleted:true}]})
         if(reviewDeleteCheck.length>0){ return res.status(404).send({status:false,message:"Review is deleted already"})}
-
-
-
-        let token = req.headers['x-api-key'] || req.headers['X-api-key']
-        if (!token) {
-            return res.status(403).send({ status: false, message: "token must be present" })
-        }
-
 
         let decoded = jwt.verify(token, secretKey,{ignoreExpiration:true})
          
@@ -48,7 +47,7 @@ const updateCheckReview = async function(req, res, next) {
     
         let logiUserId=bookid.userId.toString()
         if(logiUserId!== decoded.userId){
-            return res.status(400).send({status:false, msg:"Login user is different"})
+            return res.status(403).send({status:false, msg:"Login user is different"})
         }
         next()
     } catch (error) {

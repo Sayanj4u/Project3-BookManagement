@@ -10,7 +10,6 @@ const authCheck = async function(req, res, next) {
         if(!mongoose.isValidObjectId(book)){
             return res.status(400).send({ status: false, messege: "bookId is Invalid" });
         }
-    
         const books = await bookModel.findById({_id:book})
         if(!books){ return res.status(404).send({status:false,message:"No such book found with this Id"})}
     
@@ -21,9 +20,13 @@ const authCheck = async function(req, res, next) {
 
         let token = req.headers['x-api-key'] || req.headers['X-api-key']
         if (!token) {
-            return res.status(403).send({ status: false, message: "token must be present" })
+            return res.status(401).send({ status: false, message: "token must be present" })
         }
-
+        try{
+            let decoded = jwt.verify(token, secretKey);
+            }catch(error){
+            return res.status(401).send({status:false,message:"invalid token or token expired"})
+        }
 
         let decoded = jwt.verify(token, secretKey,{ignoreExpiration:true})
          
@@ -34,7 +37,7 @@ const authCheck = async function(req, res, next) {
     
         let logiUserId=bookid.userId.toString()
         if(logiUserId!== decoded.userId){
-            return res.status(400).send({status:false, msg:"Login user is different"})
+            return res.status(403).send({status:false, msg:"Login user is different"})
         }
         next()
     } catch (error) {
