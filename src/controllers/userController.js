@@ -3,7 +3,7 @@ const secretKey = "Functionup-Radon";
 const jwt = require("jsonwebtoken");
 const validator = require("../validator/validator");
 
-//-----------------------------------User Creation----------------------------------------------------------------
+//*-----------------------------------User Creation----------------------------------------------------------------
 
 const createUser = async function (req, res) {
   try {
@@ -13,7 +13,7 @@ const createUser = async function (req, res) {
 
     const { title, name, email, phone, password, address } = requestBody; //destructuring
 
-    // **alidation starts**
+    // **Validation starts**
 
     // title validation
 
@@ -142,7 +142,7 @@ const createUser = async function (req, res) {
   }
 };
 
-//-----------------------------------**User Login**----------------------------------------------------------------
+//*-----------------------------------**User Login**----------------------------------------------------------------
 
 const loginUser = async function (req, res) {
   try {
@@ -191,7 +191,7 @@ const loginUser = async function (req, res) {
 
     req.header("x-api-key", token); //setting headers
     return res
-      .status(201)
+      .status(200)
       .send({ status: true, message: "login successfully", data: token });
   } catch (error) {
     res.status(500).send({ status: false, Error: error.message });

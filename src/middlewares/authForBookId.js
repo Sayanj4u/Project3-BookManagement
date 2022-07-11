@@ -28,11 +28,6 @@ const authCheck = async function(req, res, next) {
             return res.status(401).send({status:false,message:"invalid token or token expired"})
         }
 
-        let decoded = jwt.verify(token, secretKey,{ignoreExpiration:true})
-         
-        if (Date.now()>decoded.exp*1000) {
-            return res.status(401).send({ status: false, message: "token is expired" })
-        }
         const bookid = await bookModel.findById({_id:book})
     
         let logiUserId=bookid.userId.toString()

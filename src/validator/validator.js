@@ -4,7 +4,6 @@ const isValidName = (name) => {
     if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(name))
         return true
 };
-
 const isValidUserDetails = (UserDetails)=> {
     if(/^(?=.*?[a-zA-Z])[a-zA-Z\d ]+$/.test(UserDetails))
     return true
@@ -16,13 +15,8 @@ const isValid = function(value) {
     return true;
 };
 
-
-const isValidRequestBody = function(requestBody) {
-    return Object.keys(requestBody).length > 0;
-};
-
 const isValidMobile = (mobile) => {
-    if (/^(\+\d{1,3}[- ]?)?\d{10}$/.test(mobile))
+    if (/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/.test(mobile))
         return true
 }
 
@@ -45,4 +39,4 @@ const isValidObjectId = function(objectId) {
     return mongoose.Types.ObjectId.isValid(objectId);
 };
 
-module.exports = {isValidName,isValid,isValidRequestBody,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidUserDetails,isValidIsbn,}
+module.exports = {isValidName,isValid,isValidEmail,isValidMobile,isValidPassword,isValidObjectId,isValidUserDetails,isValidIsbn,}
