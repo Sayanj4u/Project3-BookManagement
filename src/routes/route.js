@@ -24,9 +24,9 @@ router.put('/books/:bookId',MW.BodyValidation,MW2.authCheck,bookController.updat
 
 router.delete('/books/:bookId',MW2.authCheck,bookController.deleteByBookId)
 
-router.post('/books/:bookId/review',MW.BodyValidation,MW3.checkReview,reviewController.createReview)
+router.post('/books/:bookId/review',MW.BodyValidation,MW3.checkReview,reviewController.createReview) // token invalid and token expire
 
-router.put('/books/:bookId/review/:reviewId',MW4.updateCheckReview,reviewController.updateReview)
+router.put('/books/:bookId/review/:reviewId',MW.BodyValidation,MW4.updateCheckReview,reviewController.updateReview)
 
 router.delete('/books/:bookId/review/:reviewId',MW4.updateCheckReview,reviewController.deleteReview)
 

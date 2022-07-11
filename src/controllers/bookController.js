@@ -152,6 +152,7 @@ const createBook = async function (req, res) {
   }
 };
 
+
 //-----------------------------------GetBooks----------------------------------------------------------------
 
 const getBooks = async function (req, res) {
@@ -230,7 +231,7 @@ const getBooksById = async function (req, res) {
   const review = await reviewModel.find({ bookId: bookId }).select({_id:1,bookId:1,reviewedBy:1,reviewedAt:1,rating:1, review:1})
 
   const book = await bookModel.findOne({$and:[{ _id: bookId,isDeleted:false }]}).select({ISBN:0,__v:0,deletedAt:0})
-  
+
   if (!book) {
     return res
       .status(404)
