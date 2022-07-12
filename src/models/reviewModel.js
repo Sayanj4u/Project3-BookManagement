@@ -11,11 +11,11 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: "Guest",
+    trim:true,
   },
   reviewedAt: {
     type: Date,
     required: true,
-    default: Date.now(),
   },
   rating: {
     type: Number,

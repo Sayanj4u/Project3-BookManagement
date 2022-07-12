@@ -98,20 +98,20 @@ const createUser = async function (req, res) {
         .status(400)
         .send({ status: false, message: "password is required" });
     }
+
     if (!validator.isValidPassword(password)) {
       return res.status(400).send({
         status: false,
         message:
-          "Password must contains min 8 chracters, max 15 characters at least one uppercase letter, one lowercase letter, one number and one special character:",
-      });
+          "Password must contains min 8 chracters, max 15 characters Atleast one UpperCase and a number "});
     }
-    // Password must contain atleast one upper and lower Case and a special character and should be 8 to 15 character length
-
+   
     //Address Validation
 
-    const { street, city, pincode } = requestBody.address;
+   
     if (address) {
-      if (!/^([a-zA-Z ]+)$/.test(street)) {
+        const { street, city, pincode } = requestBody.address;
+      if (!/^(?=.*?[a-zA-Z])[a-zA-Z\d ]+$/.test(street)) {
         //street validation
         return res.status(400).send({
           status: false,
@@ -133,7 +133,7 @@ const createUser = async function (req, res) {
         });
       }
     }
-    const registerUser = await userModel.create(body);
+    const registerUser = await userModel.create(requestBody);
     res
       .status(201)
       .send({ status: true, message: "Success", data: registerUser });

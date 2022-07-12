@@ -134,7 +134,7 @@ const createBook = async function (req, res) {
         .send({ status: false, message: "ReleasedAt is required" });
     }
 
-    const book = await bookModel.create(requestBody);
+    const book = await bookModel.create(requestBody)
 
     res.status(201).send({
       status: true,
@@ -153,24 +153,6 @@ const getBooks = async function (req, res) {
     const query = req.query;
     const filter = {};
     filter.isDeleted = false;
-
-    //Authentication
-
-    let token = req.headers["x-api-key"] || req.headers["X-api-key"];
-    if (!token) {
-      return res
-        .status(401)
-        .send({ status: false, message: "token must be present" });
-    }
-    try {
-      let decoded = jwt.verify(token, secretKey);
-    } catch (error) {
-      return res
-        .status(401)
-        .send({ status: false, message: "invalid token or token expired" });
-    }
-
-    //Authentication ends
 
     if (query.userId) {
       if (!mongoose.isValidObjectId(userId)) {

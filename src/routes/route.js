@@ -1,77 +1,83 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userController");
-const bookController = require("../controllers/bookController");
-const reviewController = require("../controllers/reviewController");
-const MW = require("../middlewares/auth");
-const MW2 = require("../middlewares/authForBookId");
-const MW3 = require("../middlewares/authReview");
-const MW4 = require("../middlewares/authUpdateReview");
+
+const { createUser, loginUser } = require("../controllers/userController");
+
+const {
+  createBook,
+  getBooks,
+  getBooksById,
+  updateBookById,
+  deleteByBookId,
+} = require("../controllers/bookController");
+
+const {
+  createReview,
+  updateReview,
+  deleteReview,
+} = require("../controllers/reviewController");
+
+const {
+  AuthenticationCheck,
+  BodyValidation,
+} = require("../middlewares/Authentication");
+
+const { AutherizationCheck } = require("../middlewares/Autherization");
+
+const { authCheck } = require("../middlewares/AutherizationForUpdateAndDelete.js");
 
 //*-----------------------------------User Creation----------------------------------------------------------------
 
-router.post("/register", MW.BodyValidation, userController.createUser);
-
-//*-----------------------------------Book Creation----------------------------------------------------------------
-router.post(
-  "/books",
-  MW.BodyValidation,
-  MW.loginCheck,
-  bookController.createBook
-);
+router.post("/register", BodyValidation, createUser);
 
 //*-----------------------------------**User Login**----------------------------------------------------------------
 
-router.post("/login", MW.BodyValidation, userController.loginUser); //
+router.post("/login", BodyValidation, loginUser); //
+
+//*-----------------------------------Book Creation----------------------------------------------------------------
+
+router.post(
+  "/books",
+  BodyValidation,
+  AuthenticationCheck,
+  AutherizationCheck,
+  createBook
+);
 
 //*-----------------------------------GetBooks And Filters----------------------------------------------------------------
 
-router.get("/books", bookController.getBooks);
+router.get("/books", AuthenticationCheck, getBooks);
 
 //*-----------------------------------GetBooksById----------------------------------------------------------------
 
-router.get("/books/:bookId", bookController.getBooksById);
+router.get("/books/:bookId", AuthenticationCheck, getBooksById);
 
 //*-----------------------------------UpdateBooksById----------------------------------------------------------------
 
 router.put(
   "/books/:bookId",
-  MW.BodyValidation,
-  MW2.authCheck,
-  bookController.updateBookById
+  BodyValidation,
+  AuthenticationCheck,
+  authCheck,
+  updateBookById
 );
 
 //*-----------------------------------DeleteBookById----------------------------------------------------------------
 
-router.delete("/books/:bookId", MW2.authCheck, bookController.deleteByBookId);
+router.delete("/books/:bookId", AuthenticationCheck, authCheck, deleteByBookId);
 
 //*-----------------------------------Review Creation----------------------------------------------------------------
 
-router.post(
-  "/books/:bookId/review",
-  MW.BodyValidation,
-  MW3.checkReview,
-  reviewController.createReview
-);  // token invalid and token expire
+router.post("/books/:bookId/review", BodyValidation, createReview); // token invalid and token expire
 
 //*-----------------------------------Update Review ----------------------------------------------------------------
 
-router.put(
-  "/books/:bookId/review/:reviewId",
-  MW.BodyValidation,
-  MW4.updateCheckReview,
-  reviewController.updateReview
-);
+router.put("/books/:bookId/review/:reviewId", BodyValidation, updateReview);
 
 //*-----------------------------------Delete Review ----------------------------------------------------------------
 
-router.delete(
-  "/books/:bookId/review/:reviewId",
-  MW4.updateCheckReview,
-  reviewController.deleteReview
-);
+router.delete("/books/:bookId/review/:reviewId", deleteReview);
 
 module.exports = router;
-
 
 //*-----------------------------------*Completed*----------------------------------------------------------------

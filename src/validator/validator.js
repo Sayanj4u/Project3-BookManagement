@@ -26,9 +26,10 @@ const isValidEmail = (email) => {
 }
 
 const isValidPassword = (password)=> {
-    if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/.test(password))
+    if(/^(?!.* )(?=.*\d)(?=.*[A-Z]).{8,15}$/.test(password))
     return true
 }
+
 
 const isValidIsbn = (ISBN)=> {
     if(/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN))
