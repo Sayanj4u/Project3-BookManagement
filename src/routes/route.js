@@ -22,9 +22,9 @@ const {
   BodyValidation,
 } = require("../middlewares/Authentication");
 
-const { AutherizationCheck } = require("../middlewares/Autherization");
+const { AuthorizationCheck } = require("../middlewares/Authorization");
 
-const { authCheck } = require("../middlewares/AutherizationForUpdateAndDelete.js");
+const { authCheck } = require("../middlewares/AuthorizationForUpdateAndDelete.js");
 
 //*-----------------------------------User Creation----------------------------------------------------------------
 
@@ -40,7 +40,7 @@ router.post(
   "/books",
   BodyValidation,
   AuthenticationCheck,
-  AutherizationCheck,
+  AuthorizationCheck,
   createBook
 );
 
@@ -68,7 +68,7 @@ router.delete("/books/:bookId", AuthenticationCheck, authCheck, deleteByBookId);
 
 //*-----------------------------------Review Creation----------------------------------------------------------------
 
-router.post("/books/:bookId/review", BodyValidation, createReview); // token invalid and token expire
+router.post("/books/:bookId/review", BodyValidation, createReview); 
 
 //*-----------------------------------Update Review ----------------------------------------------------------------
 

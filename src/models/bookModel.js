@@ -38,7 +38,7 @@ const bookSchema = new mongoose.Schema(
         }
         ,
         reviews: {
-            type: Number,      //need help
+            type: Number,      
             default: 0,
             trim:true
         },

@@ -5,9 +5,9 @@ const userModel = require("../models/userModel");
 
 
 
-//*----------------Authneication-------------------
+//*----------------Authorization For Book Creation------------------
 
-const AutherizationCheck = async function (req, res, next) {
+const AuthorizationCheck = async function (req, res, next) {
   try {
     let token = req.headers["x-api-key"]
    let decoded= jwt.verify(token,secretKey)
@@ -32,7 +32,7 @@ const AutherizationCheck = async function (req, res, next) {
 
 
    if(decoded.userId!==userId){
-    return res.status(403).send({status:false,message:"Login User Is Not Autherized To perform This Task"})
+    return res.status(403).send({status:false,message:"Login User Is Not Authorized To perform This Task"})
    } 
   
   next();
@@ -42,4 +42,4 @@ const AutherizationCheck = async function (req, res, next) {
   }
 }
 
-module.exports = { AutherizationCheck };
+module.exports = { AuthorizationCheck };
