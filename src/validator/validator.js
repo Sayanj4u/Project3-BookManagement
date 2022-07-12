@@ -5,7 +5,7 @@ const isValidName = (name) => {
         return true
 };
 const isValidUserDetails = (UserDetails)=> {
-    if(/^(?=.*?[a-zA-Z])[a-zA-Z\d ]+$/.test(UserDetails))
+    if(/^(?=.*?[a-zA-Z])[.a-zA-Z\d ]+$/.test(UserDetails))
     return true
 }
 

@@ -78,6 +78,18 @@ router.put("/books/:bookId/review/:reviewId", BodyValidation, updateReview);
 
 router.delete("/books/:bookId/review/:reviewId", deleteReview);
 
+
+
+
+
+router.all("/**",function(req,res){
+    return res.status(400).send({
+        status:false,message:"the end point is not correct"
+    })
+
+})
+
 module.exports = router;
+
 
 //*-----------------------------------*Completed*----------------------------------------------------------------

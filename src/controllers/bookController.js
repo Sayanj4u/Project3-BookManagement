@@ -59,9 +59,6 @@ const createBook = async function (req, res) {
     if (!validator.isValidIsbn(ISBN)) {
       return res.status(400).send({ status: false, message: "Invalid ISBN" });
     }
-    if (!validator.isValidIsbn(ISBN)) {
-      return res.status(400).send({ status: false, message: "Invalid ISBN" });
-    }
 
     //ISBN unique check
 
@@ -126,7 +123,7 @@ const createBook = async function (req, res) {
       if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(releasedAt))
         return res.status(400).send({
           status: false,
-          message: "date format should be in YYYY-MM-DD",
+          message: "Date format should be in YYYY-MM-DD for releasedAt",
         });
     } else {
       return res
@@ -181,7 +178,6 @@ const getBooks = async function (req, res) {
     if (book.length === 0) {
       return res.status(404).send({ status: false, message: "No Books Found" });
     }
-    console.log(book.length);
     res
       .status(200)
       .send({ status: true, message: "Books list", requestBody: book });
@@ -305,3 +301,4 @@ module.exports = {
   updateBookById,
   deleteByBookId,
 };
+
