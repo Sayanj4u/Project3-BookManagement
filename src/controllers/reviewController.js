@@ -85,7 +85,7 @@ const createReview = async function (req, res) {
     }
 
     data["bookId"] = book;
-    
+
     data["reviewedAt"] = Date.now();
 
     const reviews = await reviewModel.create(data);
@@ -105,7 +105,7 @@ const createReview = async function (req, res) {
     bookReview._doc.reviewsData = reviewData;
 
     res
-      .status(200)
+      .status(201)
       .send({ status: true, message: "Books list", data: bookReview });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });

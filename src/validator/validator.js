@@ -4,7 +4,7 @@ const isValidName = (name) => {
   if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(name)) return true;
 };
 const isValidUserDetails = (UserDetails) => {
-  if (/^(?=.*?[a-zA-Z])[.a-zA-Z\d ]+$/.test(UserDetails)) return true;
+  if (/^(?=.*?[a-zA-Z])[. %?a-zA-Z\d ]+$/.test(UserDetails)) return true;
 };
 
 const isValid = function (value) {

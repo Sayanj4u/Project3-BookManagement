@@ -94,7 +94,7 @@ const createBook = async function (req, res) {
       });
     }
     if (subcategory) {
-      if (typeof subcategory === "string" || typeof subcategory === "object") {
+      if (typeof subcategory !== "string" || typeof subcategory === "object") {
         for (let i = 0; i < subcategory.length; i++) {
           if (subcategory[i] == 0) {
             return res.status(400).send({
@@ -110,11 +110,7 @@ const createBook = async function (req, res) {
             });
           }
         }
-      } else {
-        return res.status(400).send({
-          status: false,
-          message: " enter valid subcategory in string or [] only",
-        });
+      
       }
     }
 
