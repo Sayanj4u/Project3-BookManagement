@@ -110,6 +110,7 @@ const createUser = async function (req, res) {
     //Address Validation
 
     if (address) {
+       
       const { street, city, pincode } = requestBody.address;
       if (!/^(?=.*?[a-zA-Z])[a-zA-Z\d ]+$/.test(street)) {
         //street validation

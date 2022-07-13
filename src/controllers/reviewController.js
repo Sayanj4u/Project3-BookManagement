@@ -298,11 +298,13 @@ const deleteReview = async function (req, res) {
       { $set: { isDeleted: true } },
       { new: true }
     );
-    const bookReview = await bookModel.findOneAndUpdate(
+    if(books.reviews!==0){
+        const bookReview = await bookModel.findOneAndUpdate(
       { _id: bookId },
       { $inc: { reviews: -1 } },
       { new: true }
-    );
+    );}
+
 
     res.status(200).send({ status: true, message: "Review Deleted" });
   } catch (error) {

@@ -2,8 +2,7 @@ const bookModel = require("../models/bookModel");
 const validator = require("../validator/validator");
 const mongoose = require("mongoose");
 const reviewModel = require("../models/reviewModel");
-const secretKey = "Functionup-Radon";
-const jwt = require("jsonwebtoken");
+
 
 //*-----------------------------------Book Creation----------------------------------------------------------------
 
@@ -195,7 +194,7 @@ const getBooksById = async function (req, res) {
         .send({ status: false, message: "bookId is Invalid" });
     }
     
-    const review = await reviewModel.find({ bookId: bookId }).select({
+    const review = await reviewModel.find( {$and: [{ bookId: bookId }, { isDeleted: false }]}).select({
       _id: 1,
       bookId: 1,
       reviewedBy: 1,
