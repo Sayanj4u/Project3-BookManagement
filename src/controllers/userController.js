@@ -36,7 +36,7 @@ const createUser = async function (req, res) {
         .status(400)
         .send({ status: false, messege: "Name is required" });
     }
-    if (!validator.isValidName(name.trim())) {
+    if (!validator.isValidName(name)) {
       return res.status(400).send({ status: false, messege: "Invalid Name" });
     }
     name.trim();
@@ -103,14 +103,14 @@ const createUser = async function (req, res) {
       return res.status(400).send({
         status: false,
         message:
-          "Password must contains min 8 chracters, max 15 characters Atleast one UpperCase and a number "});
+          "Password must contains min 8 chracters, max 15 characters Atleast one UpperCase and a number ",
+      });
     }
-   
+
     //Address Validation
 
-   
     if (address) {
-        const { street, city, pincode } = requestBody.address;
+      const { street, city, pincode } = requestBody.address;
       if (!/^(?=.*?[a-zA-Z])[a-zA-Z\d ]+$/.test(street)) {
         //street validation
         return res.status(400).send({
@@ -133,6 +133,11 @@ const createUser = async function (req, res) {
         });
       }
     }
+
+
+//*-----------------------------------**Validation Ends**----------------------------------------------------------------
+
+
     const registerUser = await userModel.create(requestBody);
     res
       .status(201)
@@ -141,6 +146,8 @@ const createUser = async function (req, res) {
     res.status(500).send({ status: false, Error: error.message });
   }
 };
+
+
 
 //*-----------------------------------**User Login**----------------------------------------------------------------
 
@@ -192,7 +199,7 @@ const loginUser = async function (req, res) {
     req.header("x-api-key", token); //setting headers
     return res
       .status(200)
-      .send({ status: true, message: "login successfully", data: token });
+      .send({ status: true, message: "login successfully", token: token });
   } catch (error) {
     res.status(500).send({ status: false, Error: error.message });
   }

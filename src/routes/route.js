@@ -24,7 +24,9 @@ const {
 
 const { AuthorizationCheck } = require("../middlewares/Authorization");
 
-const { authCheck } = require("../middlewares/AuthorizationForUpdateAndDelete.js");
+const {
+  authCheck,
+} = require("../middlewares/AuthorizationForUpdateAndDelete.js");
 
 //*-----------------------------------User Creation----------------------------------------------------------------
 
@@ -68,7 +70,7 @@ router.delete("/books/:bookId", AuthenticationCheck, authCheck, deleteByBookId);
 
 //*-----------------------------------Review Creation----------------------------------------------------------------
 
-router.post("/books/:bookId/review", BodyValidation, createReview); 
+router.post("/books/:bookId/review", BodyValidation, createReview);
 
 //*-----------------------------------Update Review ----------------------------------------------------------------
 
@@ -78,18 +80,13 @@ router.put("/books/:bookId/review/:reviewId", BodyValidation, updateReview);
 
 router.delete("/books/:bookId/review/:reviewId", deleteReview);
 
-
-
-
-
-router.all("/**",function(req,res){
-    return res.status(400).send({
-        status:false,message:"the end point is not correct"
-    })
-
-})
+router.all("/**", function (req, res) {
+  return res.status(400).send({
+    status: false,
+    message: "the end point is not correct",
+  });
+});
 
 module.exports = router;
-
 
 //*-----------------------------------*Completed*----------------------------------------------------------------

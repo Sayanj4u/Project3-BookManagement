@@ -12,32 +12,26 @@ const createReview = async function (req, res) {
     var { reviewedBy, rating, review, bookId, reviewedAt } = data; // Destructing
     const array = Object.keys(data);
 
-    if ((array.length > 3) || array.includes("bookId")) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "body may only consist reviewedBy,rating,review or either one of them",
-        });
+    if (array.length > 3 || array.includes("bookId")) {
+      return res.status(400).send({
+        status: false,
+        message:
+          "body may only consist reviewedBy,rating,review or either one of them",
+      });
     }
     if (array.includes("reviewedAt")) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "body may only consist reviewedBy,rating,review or either one of them",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "body may only consist reviewedBy,rating,review or either one of them",
+      });
     }
 
     if (!book) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Book Id from  Params should be Present",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Book Id from  Params should be Present",
+      });
     }
 
     if (!mongoose.isValidObjectId(book)) {
@@ -91,7 +85,7 @@ const createReview = async function (req, res) {
     }
 
     data["bookId"] = book;
-    let today = new Date().toISOString().slice(0, 10)
+    let today = new Date().toISOString().slice(0, 10);
     data["reviewedAt"] = Date.now();
 
     const reviews = await reviewModel.create(data);
