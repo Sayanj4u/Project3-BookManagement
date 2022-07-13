@@ -226,29 +226,59 @@ const getBooksById = async function (req, res) {
 const updateBookById = async function (req, res) {
   try {
     const book = req.params.bookId;
-    const updateList = req.body;
 
-    const updatedTitle = await bookModel.find({ title: updateList.title });
+    const{title,ISBN,excerpt,releasedAt}=req.body
+    const UpdateItems={}
+
+const UpdatBook=await bookModel.find({_id:book,isDeleted:false})
+
+if(title){
+    const updatedTitle = await bookModel.find({ title:title });
     if (updatedTitle.length > 0) {
       return res
         .status(400)
-        .send({ status: false, message: `${updateList.title} is  already present , use different title`});
+        .send({ status: false, message: `${title} is  already present , use different title`});
     }
+    else{
+       
+    UpdateItems.title=title
+  
 
-    const updateIsbn = await bookModel.find({ ISBN: updateList.ISBN });
+}}
+if(ISBN){
+    const updateIsbn = await bookModel.find({ ISBN:ISBN });
     if (updateIsbn.length > 0) {
       return res
         .status(400)
-        .send({ status: false, message: `${updateList.ISBN} is  already present , use different ISBN` });
+        .send({ status: false, message: `${ISBN} is  already present , use different ISBN` });
     }
+    else{
+    UpdateItems.ISBN=ISBN
+}}
+    if (releasedAt) {
+        if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(releasedAt))
+          return res.status(400).send({
+            status: false,
+            message: "Date format should be in YYYY-MM-DD for releasedAt",
+          });
+          else{
+            UpdateItems.releasedAt=releasedAt
+          }
+        }
+        if(excerpt){
+            if (!validator.isValidUserDetails(excerpt)) {
+                return res
+                  .status(400)
+                  .send({ status: false, message: "please enter valid excerpt" });
+              }
+              else{
+                
+              }
+              UpdateItems.excerpt=excerpt
+        }
+const BooksUpdate=await bookModel.findOneAndUpdate({_id:book},{$set:UpdateItems},{new:true})
 
-    const updatedBook = await bookModel.findOneAndUpdate(
-      { _id: book },
-      { $set: updateList },
-      { new: true }
-    );
-
-    res.status(200).send({ status: true, message:"Success" ,data: updatedBook });
+    res.status(200).send({ status: true, message:"Success" ,data:BooksUpdate });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
   }

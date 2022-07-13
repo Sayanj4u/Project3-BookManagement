@@ -119,6 +119,7 @@ const updateReview = async function (req, res) {
     const data = req.body;
     const { reviewId, bookId } = req.params;
     const { review, rating, reviewedBy } = data; // destructing details
+    const ReviewUpdate={}
 
     if (!mongoose.isValidObjectId(bookId)) {
       return res
@@ -175,11 +176,14 @@ const updateReview = async function (req, res) {
     }
 
     if (rating) {
-      if (!/^[+]?([1-4]*\.[0-9]+|[1-5])$/.test(rating))
+      if (!/^[+]?([1-4]*\.[0-9]+|[1-5])$/.test(rating)){
         return res.status(400).send({
           status: false,
           message: "Rating Should be from 1 to 5 ",
-        });
+        })}
+        else{
+            ReviewUpdate.rating=rating
+        }
     }
 
     if (review || review === "") {
@@ -187,6 +191,10 @@ const updateReview = async function (req, res) {
         return res
           .status(400)
           .send({ status: false, message: "Invalid review" });
+      }
+      else{
+        ReviewUpdate.review=review
+
       }
     }
 
@@ -197,10 +205,13 @@ const updateReview = async function (req, res) {
           message: "please enter valid reviewers Name",
         });
       }
+      else{
+        ReviewUpdate.reviewedBy=reviewedBy
+      }
     }
 
     const UpdateReview = await reviewModel
-      .findOneAndUpdate({ _id: reviewId }, { $set: data }, { new: true })
+      .findOneAndUpdate({ _id: reviewId }, { $set:ReviewUpdate}, { new: true })
       .select({
         _id: 1,
         bookId: 1,
