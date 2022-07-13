@@ -85,7 +85,7 @@ const createReview = async function (req, res) {
     }
 
     data["bookId"] = book;
-    let today = new Date().toISOString().slice(0, 10);
+    
     data["reviewedAt"] = Date.now();
 
     const reviews = await reviewModel.create(data);
