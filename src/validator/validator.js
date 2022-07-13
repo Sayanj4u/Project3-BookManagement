@@ -19,11 +19,11 @@ const isValidMobile = (mobile) => {
 };
 
 const isValidEmail = (email) => {
-  if (/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email)) return true;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return true;
 };
 
 const isValidPassword = (password) => {
-  if (/^(?!.* )(?=.*\d)(?=.*[A-Z]).{8,15}$/.test(password)) return true;
+  if (/^(?!.* )(?=.*\d)(?=.*[a-z]).{8,15}$/.test(password)) return true;
 };
 
 const isValidIsbn = (ISBN) => {
