@@ -2,6 +2,8 @@ const bookModel = require("../models/bookModel");
 const validator = require("../validator/validator");
 const mongoose = require("mongoose");
 const reviewModel = require("../models/reviewModel");
+const aws= require("aws-sdk")
+const multer=require("multer")
 
 
 //*-----------------------------------Book Creation----------------------------------------------------------------
@@ -12,7 +14,7 @@ const createBook = async function (req, res) {
 
     // extract parameters
 
-    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } =
+    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt} =
       requestBody; //destructuring
 
     //title validation
@@ -127,6 +129,7 @@ const createBook = async function (req, res) {
         .send({ status: false, message: "ReleasedAt is required" });
     }
 
+    requestBody.bookCover=req.uploadedFileURL
     const book = await bookModel.create(requestBody);
 
     res.status(201).send({
@@ -134,6 +137,7 @@ const createBook = async function (req, res) {
       message: "Success",
       data: book,
     });
+    
   } catch (error) {
     return res.status(500).send({ status: false, error: error.message });
   }

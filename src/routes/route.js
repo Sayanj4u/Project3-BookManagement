@@ -28,6 +28,9 @@ const {
   authCheck,
 } = require("../middlewares/AuthorizationForUpdateAndDelete.js");
 
+
+const {awsApi}=require("../controllers/aws.js")
+
 //*-----------------------------------User Creation----------------------------------------------------------------
 
 router.post("/register", BodyValidation, createUser);
@@ -42,7 +45,7 @@ router.post(
   "/books",
   BodyValidation,
   AuthenticationCheck,
-  AuthorizationCheck,
+  AuthorizationCheck,awsApi,
   createBook
 );
 
@@ -80,12 +83,23 @@ router.put("/books/:bookId/review/:reviewId", BodyValidation, updateReview);
 
 router.delete("/books/:bookId/review/:reviewId", deleteReview);
 
+
+
+
+
+//router.post("/aws",awsApi)
+
 router.all("/**", function (req, res) {
   return res.status(400).send({
     status: false,
     message: "the end point is not correct",
   });
 });
+
+
+
+
+
 
 module.exports = router;
 
