@@ -1,7 +1,5 @@
-const express = require('express');
-const router = express.Router();
 const aws= require("aws-sdk")
-const multer=require("multer")
+
 
 
 // s3 and cloud stodare
@@ -33,6 +31,7 @@ let uploadFile= async ( file) =>{
         Key: "abc/" + file.originalname, //HERE 
         Body: file.buffer
     }
+
 
 
     s3.upload( uploadParams, function (err, data ){

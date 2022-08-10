@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const secretKey = "Functionup-Radon";
 const jwt = require("jsonwebtoken");
 const validator = require("../validator/validator");
+const bcrypt=require("bcrypt")
 
 //*-----------------------------------User Creation----------------------------------------------------------------
 
@@ -11,7 +12,7 @@ const createUser = async function (req, res) {
 
     //# Extract parameters
 
-    const { title, name, email, phone, password, address } = requestBody; //destructuring
+    var { title, name, email, phone, password, address } = requestBody; //destructuring
 
     // **Validation starts**
 
@@ -107,6 +108,10 @@ const createUser = async function (req, res) {
       });
     }
 
+    let saltRounds=10
+    const hash = bcrypt.hashSync(password, saltRounds);
+    requestBody.password=hash
+
     //Address Validation
 
     if (address) {
@@ -185,11 +190,19 @@ const loginUser = async function (req, res) {
         .status(401)
         .send({ status: false, message: "Incorrect email Id" });
     }
-    if (findUser.password !== req.body.password) {
+
+    const passwordcheck = bcrypt.compareSync(password, findUser.password); // true
+    if (!passwordcheck)
       return res
         .status(401)
-        .send({ status: false, message: "Incorrect password" });
-    }
+        .send({ status: false, msg: "password is incorrect" });
+
+
+    // if (findUser.password !== req.body.password) {
+    //   return res
+    //     .status(401)
+    //     .send({ status: false, message: "Incorrect password" });
+    // }
 
     //Token Generation
 
